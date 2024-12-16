@@ -71,27 +71,34 @@ def check_a(rows):
                 #print(f'({x},{y}: {matches})')
     return count
 
-def check_b(rows):
+def check_b(rows, debug=False):
     count = 0
     for y, row in enumerate(rows):
         for x, val in enumerate(row):
             if val == 'A':
+                valid = True
                 try:
+                    if y == 0 or y == len(rows) - 1:
+                        continue
+                    if x == 0 or x == len(rows[y]) - 1:
+                        continue
                     ul = rows[y-1][x-1]
-                    up = rows[y-1][x+1]
+                    ur = rows[y-1][x+1]
                     bl = rows[y+1][x-1]
                     br = rows[y+1][x+1]
+
                     if ul == 'S':
                         if br != 'M':
                             continue
                     elif ul == 'M':
                         if br != 'S':
                             continue
-                    else: continue
-                    if up == 'S':
+                    else:
+                        continue
+                    if ur == 'S':
                         if bl != 'M':
                             continue
-                    elif up == 'M':
+                    elif ur == 'M':
                         if bl != 'S':
                             continue
                     else:
@@ -99,6 +106,11 @@ def check_b(rows):
                 except IndexError:
                     continue
                 count += 1
+                if debug:
+                    print(f'({x},{y})')
+                    print(f' {ul} . {ur}\n . A .\n {bl} . {br}')
+                    print()
+                    input()
     return count
 
 if __name__ == '__main__':
